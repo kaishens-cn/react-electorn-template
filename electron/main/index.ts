@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain,shell } from 'electron'
-import { release } from 'os'
-import { join } from 'path'
-import { platform } from 'process'
+import { release } from 'node:os'
+import { join } from 'node:path'
+import { platform } from 'node:process'
 // import * as remoteMain from '@electron/remote/main';
 // remoteMain.initialize();
 
@@ -40,13 +40,13 @@ if (!app.requestSingleInstanceLock()) {
 let win: BrowserWindow | null
 // Here, you can also use other preload
 const preload = join(__dirname, '../preload/index.js')
-const url = process.env.VITE_DEV_SERVER_URL
+const url = process.env.VITE_DEV_SERVER_URL || ''
 const indexHtml = join(process.env.DIST, 'index.html')
 
 async function createWindow() {
   win = new BrowserWindow({
     title: 'Main window',
-    icon: join(process.env.PUBLIC, 'favicon.ico'),
+    icon: join(process.env.PUBLIC || '', 'favicon.ico'),
     webPreferences: {
       preload,
       // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
@@ -60,12 +60,12 @@ async function createWindow() {
       // webSecurity: false
     },
     show: false,
-    titleBarStyle: 'hidden',
-    titleBarOverlay: {
-      color: '#2f3241',
-      symbolColor: '#74b1be',
-      height: 60
-    }
+    // titleBarStyle: 'hidden',
+    // titleBarOverlay: {
+    //   color: '#2f3241',
+    //   symbolColor: '#74b1be',
+    //   height: 60
+    // }
   })
 
   // remoteMain.enable(win.webContents);
